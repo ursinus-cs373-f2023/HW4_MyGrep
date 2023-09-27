@@ -29,6 +29,10 @@ def get_state_info(delta, width):
     states = set([key[0] for key in delta.keys()])
     for v in delta.values():
         states.update(v)
+    if not "Finish" in states:
+        raise KeyError("JFLAP renderer expects a state called 'Finish' in the transitions")
+    if not "Start" in states:
+        raise KeyError("JFLAP renderer expects a state called 'Start' in the transitions")
     counts = [sum([c == "_" for c in key]) for key in states]
     ## Step 1: Figure out order of singleton keys
     keys_single = [key for (key, count) in zip(states, counts) if count == 1]
@@ -49,7 +53,7 @@ def get_state_info(delta, width):
             ids[k2] = idx
             idx += 1
     ids["Start"] = 0
-    ids["Final"] = len(ids)+1
+    ids["Finish"] = len(ids)+1
     pos = {}
     for k, id in ids.items():
         theta = np.pi*id/len(ids)
@@ -97,7 +101,7 @@ def write_dfa_jflap(delta, filename):
         d = ""
         if state == "Start":
             d = "<initial/>"
-        if state == "Final":
+        if state == "Finish":
             d = "<final/>"
         states_xml += "<state id=\"{}\" name=\"{}\">\n    <x>{}</x>    <y>{}</y>\n{}</state>".format(id, state, x, y, d)
     ## Step 2: Setup the transitions

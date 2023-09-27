@@ -187,7 +187,7 @@ def infix2postfix(expr):
 def eval_regexp(R, s):
     """
     Check to see if a string s is part of a regular expression R
-    by converting R into an NFA and running s through that NFA.
+    by converting R into an NFA and checking to see if that NFA accepts s
     This is an efficient algorithm that takes O(len(R)len(s)) time
     in the worst case
 
