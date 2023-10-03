@@ -181,7 +181,7 @@ def infix2postfix(expr):
     ## Step 3: Pop the rest of the operators from the stack
     while len(stack) > 0:
         postfix.append(stack.pop())
-    return infix, postfix
+    return postfix
 
 
 def eval_regexp(R, s):
